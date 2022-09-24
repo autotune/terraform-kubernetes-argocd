@@ -49,7 +49,8 @@ resource "kubernetes_deployment" "server_deployment" {
           name              = var.name
           image             = "${var.image_repository}/${var.image_name}:${var.image_tag}"
           image_pull_policy = var.image_pull_policy
-          command           = ["argocd-server", "--staticassets", "/shared/app", "--redis", "${var.redis_address}:${var.redis_port}"]
+          # disable tls for istio
+          command           = ["argocd-server", "--staticassets", "/shared/app", "--redis", "${var.redis_address}:${var.redis_port}", "--insecure"]
           env {
             name  = "ARGOCD_API_SERVER_REPLICAS"
             value = tostring(var.replicas)
